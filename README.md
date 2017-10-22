@@ -3,6 +3,10 @@
 
 **FlowEngine** is a visualization development kit for developing HTML5 & Javascript based visualizable projcets.
 
+
+## Find more in the [Wiki](https://github.com/NORYOM/FE-Dev/wiki)
+
+
 ## Download FlowEngine
 
 Download compressed file directly:
@@ -80,8 +84,7 @@ Following code can be found in [example/example-1-quickStart.html](https://githu
 </script>
 
 ```
- 
-## Find more in the [Wiki](https://github.com/NORYOM/FE-Dev/wiki)
+
 
 ## API
 
