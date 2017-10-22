@@ -1,0 +1,67 @@
+<script src="./FlowEngine-mini.js"></script>
+
+<body bgcolor="#777777">
+	<canvas id="canvas1" style="cursor:default;
+		position: absolute;
+		top: 0;
+		left: 0;">
+	    The browser does not support HTML5
+	</canvas>
+</body>
+
+<script>
+    window.onload = function(){
+        // create render object and rend start rend
+        var render = new Render("canvas1",800,600);
+        render.rend();
+
+        var value = 1;
+        // button
+        var btn = new ButtonRec();
+        btn.setText("toggle value");
+
+        // label for output
+        var labelOut = new Label();
+        labelOut.text = "out:"+value;
+
+        // label for input
+        var labelIn = new Label();
+        labelIn.text = "";
+
+        // panel
+        var pnlA = new PanelRec();
+        pnlA.setTitle("Panel A");
+        pnlA.setTitleColor("#222222");
+        pnlA.x = 100;
+        pnlA.y = 200;
+
+        var pnlB = new PanelCyc();
+        pnlB.setTitle("Panel B");
+        pnlB.setTitleColor("#222222");
+        pnlB.x = 300;
+        pnlB.y = 200;
+
+        // add items into panel
+        pnlA.addItem(pnlA.paramInOut.OUT,labelOut);
+        pnlA.addItem(pnlA.paramInOut.NON,btn);
+        btn.onClick=function(){
+            value *= -1;
+        };
+        pnlA.doSomethingInLoop=function(){
+            pnlA.getOutParam(0).value = value;
+            labelOut.text = "out:"+value;
+        };
+
+        pnlB.addItem(pnlB.paramInOut.IN,labelIn);
+        pnlB.doSomethingInLoop=function(){
+            labelIn.text = this.getParamIns()[0].value;
+        };
+
+        // rend panel on canvas
+        render.addElement(pnlA);
+        render.addElement(pnlB);
+        render.doSomethingInLoop=function(){
+            // pnlB.getParamIns()[0].value = pnlA.getParamOuts()[0].value;
+        };
+    }
+</script>

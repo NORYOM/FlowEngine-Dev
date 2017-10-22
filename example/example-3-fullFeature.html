@@ -1,0 +1,123 @@
+<script src="./FlowEngine-mini.js"></script>
+
+<body bgcolor="#777777">
+	<canvas id="canvas1" style="cursor:default;
+		position: absolute;
+		top: 0;
+		left: 0;">
+	    The browser does not support HTML5
+	</canvas>
+</body>
+
+<script>
+    window.onload = function(){
+        // create render object and rend start rend
+        var render = new Render("canvas1",800,600);
+        render.rend();
+
+        var value = 1;
+        // button
+        var btnPlus = new ButtonRec();
+        btnPlus.setText("+");
+        btnPlus.onClick=function(){
+            value++;
+            if(value>9){value = 0;}
+        };
+        var btnMinus = new ButtonRec();
+        btnMinus.setText("-");
+        btnMinus.onClick=function(){
+            value--;
+            if(value<0){value = 9;}
+        };
+
+        // label for output
+        var labelShow = new Label();
+
+        // label for input
+        var labelIn1 = new Label();
+        labelIn1.text = "Method";
+        var labelIn2 = new Label();
+        labelIn2.text = "Value";
+
+        // numeric value
+        var dn = new DigiNum();
+        dn.colorOn = "#66ff99";
+
+        // add selector
+        var sel = new Selector();
+        var method = [
+                    {display:"Square",value:"sq"},
+                    {display:"Cube",value:"cu"}
+                 ];
+        for(var i=0;i<method.length;i++){
+            sel.addOption(method[i].value,method[i].display);
+        }
+        sel.setDefaultOption(0);
+        // register event for detect change
+        sel.setEvtName("selChanged-"+this.id);
+        var selChanged = false;
+        addEventListener("selChanged-"+this.id, function(e){
+            selChanged = true;
+            done = false;
+        });
+
+        // panel
+        var pnlA = new PanelCyc();
+        pnlA.setTitle("Panel A");
+        pnlA.setTitleColor("#222222");
+        pnlA.x = 50;
+        pnlA.y = 100;
+
+        var pnlB = new PanelCyc();
+        pnlB.setTitle("Panel B");
+        pnlB.setTitleColor("#222222");
+        pnlB.x = 200;
+        pnlB.y = 100;
+
+        var pnlC = new PanelCyc();
+        pnlC.setTitle("Panel C");
+        pnlC.setTitleColor("#222222");
+        pnlC.x = 200;
+        pnlC.y = 200;
+        pnlC.w = 200;
+
+        // add items into panel
+        pnlA.addItem(pnlA.paramInOut.NON,btnPlus);
+        pnlA.addItem(pnlA.paramInOut.OUT,dn);
+        pnlA.addItem(pnlA.paramInOut.NON,btnMinus);
+        pnlA.doSomethingInLoop=function(){
+            dn.setNum(value);
+            pnlA.getOutParam(0).value = value;
+        };
+
+        pnlB.addItem(pnlB.paramInOut.OUT,sel);
+        pnlB.doSomethingInLoop=function(){
+             pnlB.getOutParam(0).value = sel.getValue();
+        };
+
+        pnlC.addItem(pnlC.paramInOut.IN,labelIn1);
+        pnlC.addItem(pnlC.paramInOut.IN,labelIn2);
+        pnlC.addItem(pnlC.paramInOut.NON,labelShow);
+        pnlC.doSomethingInLoop=function(){
+            var pMethod = pnlC.getInParam(0).value;
+            var pValue = pnlC.getInParam(1).value;
+            if((pMethod!="sq" && pMethod!="cu") || !parseInt(pValue)){
+                labelShow.text = "no parameter or input error";
+            }else{
+                if(pMethod=="sq"){
+                    labelShow.text = pValue*pValue;
+                }else if(pMethod=="cu"){
+                    labelShow.text = pValue*pValue*pValue;
+                }
+            }
+        };
+
+        // rend panel on canvas
+        render.addElement(pnlA);
+        render.addElement(pnlB);
+        render.addElement(pnlC);
+        render.doSomethingInLoop=function(){
+            pnlB.getParamIns()[0].value = pnlA.getParamOuts()[0].value;
+        };
+    }
+</script>

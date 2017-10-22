@@ -1,0 +1,48 @@
+<script src="./FlowEngine-mini.js"></script>
+
+<body bgcolor="#777777">
+	<canvas id="canvas1" style="cursor:default;
+		position: absolute;
+		top: 0;
+		left: 0;">
+	    The browser does not support HTML5
+	</canvas>
+</body>
+
+<script>
+    window.onload = function(){
+        // create render object and rend start rend
+        var render = new Render("canvas1",800,600);
+        render.rend();
+
+        // button
+        var btn = new ButtonRec();
+        btn.setText("test");
+        btn.onClick=function(){
+            console.log("clicked");
+        };
+
+        // label for output
+        var labelOut = new Label();
+        labelOut.text = "out";
+
+        // label for input
+        var labelIn = new Label();
+        labelIn.text = "in";
+
+        // panel
+        var pnl = new PanelRec();
+        pnl.setTitle("FE Panel");
+        pnl.setTitleColor("#222222");
+        pnl.x = 100;
+        pnl.y = 200;
+
+        // add items into panel
+        pnl.addItem(pnl.paramInOut.IN,labelIn);
+        pnl.addItem(pnl.paramInOut.OUT,labelOut);
+        pnl.addItem(pnl.paramInOut.NON,btn);
+
+        // rend panel on canvas
+        render.addElement(pnl);
+    }
+</script>
