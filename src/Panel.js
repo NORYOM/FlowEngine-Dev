@@ -27,6 +27,18 @@ function Panel(){
 
     this.setTitle = function(txt){
         title = txt;
+        var realLength = 0;
+        for (var i = 0; i < txt.length; i++)
+        {
+            var charCode = txt.charCodeAt(i);
+            if (charCode >= 0 && charCode <= 128){
+            	realLength += 1;
+            }else{
+            	realLength += 2;
+            }
+        }
+        realLength = realLength*6;
+        this.w = realLength>=this.w-20?realLength+20:this.w;//20 is point radius*4, for distance
     };
     this.getTitle= function(){
         return title;
